@@ -64,22 +64,22 @@
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Implement augmentation pipeline in `neur/datasets.py`: `get_train_transforms()` using albumentations (RandomRotation ±10°, HorizontalFlip, VerticalFlip, RandomCrop 224 with padding 10, ColorJitter for amp/phase, GaussianBlur), `get_val_transforms()` (resize only)
-- [ ] T021 [P] [US1] Implement `SubjectDataset` class in `neur/datasets.py`: `__init__()` accepts subject index dict and transform, `__len__()` returns subject count, `__getitem__()` loads amp/phase/mask images (zero-fill if missing), stacks into 4-channel tensor (amp, phase, mask, mask_indicator), applies transforms with shared seed for geometric ops, normalizes with ImageNet stats
-- [ ] T022 [US1] Implement model builder in `neur/model.py`: `build_backbone()` function to load pre-trained ResNet18 or VGG11-BN from torchvision, `adapt_first_conv_for_4ch()` to modify conv1 for 4-channel input, `replace_classifier_head()` to set output dimension to 5 classes
-- [ ] T023 [US1] Implement discriminative fine-tuning utilities in `neur/train.py`: `freeze_backbone()` to disable gradients for conv layers, `unfreeze_backbone()` to enable gradients, `get_discriminative_optimizer()` to create Adam with layer-wise LR (head: 1e-3, late backbone: 1e-4, early backbone: 1e-5)
-- [ ] T024 [US1] Implement F0.5 metric in `neur/eval.py`: `compute_fbeta_score()` using `sklearn.metrics.fbeta_score(beta=0.5)` for class 0 (chlorella), compute per-class precision/recall/F1 scores
-- [ ] T025 [US1] Implement early stopping in `neur/train.py`: `EarlyStopping` class tracking best F0.5(chlorella) score, patience counter (default 5 epochs), returns should_stop signal
-- [ ] T026 [US1] Implement training loop per fold in `neur/train.py`: `train_one_fold()` function with two-stage fine-tuning (Stage 1: freeze backbone for 5 epochs at LR=1e-3, Stage 2: unfreeze with discriminative LR), CrossEntropyLoss, validation after each epoch, save best checkpoint when F0.5(chlorella) improves, return best metrics
-- [ ] T027 [US1] Implement checkpoint saving/loading in `neur/train.py`: `save_checkpoint()` saves state_dict, epoch, metrics, config to .pth file, `load_checkpoint()` restores model state, handle device placement (CPU/GPU)
-- [ ] T028 [US1] Implement confusion matrix generation in `neur/eval.py`: `compute_confusion_matrix()` using sklearn, save as JSON and PNG visualization, include row/column labels for 5 classes
-- [ ] T029 [US1] Implement PR curve generation in `neur/eval.py`: `compute_pr_curves()` for all classes using `sklearn.metrics.precision_recall_curve()`, save data as JSON and plot as PNG with matplotlib, highlight chlorella curve
-- [ ] T030 [US1] Implement metrics report writer in `neur/eval.py`: `generate_metrics_report()` aggregates per-class metrics, confusion matrix, PR curves into JSON file following MetricsReport format from data-model.md
-- [ ] T031 [US1] Implement validation prediction caching in `neur/train.py`: save validation softmax probabilities to `outputs/val_predictions.json` with format {fold_id: {subject_id: {probabilities: [...], true_label: int}}}
-- [ ] T032 [US1] Create training script in `scripts/train.py`: argparse CLI with --config, --data-root, --output-dir, --model-name, --num-folds, --epochs, --batch-size, --lr-head, --lr-backbone, --patience, --seed, --device, --num-workers, --resume, --verbose flags
-- [ ] T033 [US1] Implement main training pipeline in `scripts/train.py`: load config, set seeds for reproducibility, discover subjects, create folds, iterate over folds calling `train_one_fold()`, aggregate metrics across folds, generate final reports, save validation predictions for calibration
-- [ ] T034 [US1] Add progress logging in `scripts/train.py`: log fold iteration, epoch progress, train/val loss/accuracy, chlorella metrics, checkpoint saves, early stopping triggers, final aggregated metrics
-- [ ] T035 [US1] Add error handling in `scripts/train.py`: catch config errors (exit code 1), data errors (exit code 2), model errors (exit code 3), training errors (exit code 4), provide actionable error messages to stderr
+- [X] T020 [P] [US1] Implement augmentation pipeline in `neur/datasets.py`: `get_train_transforms()` using albumentations (RandomRotation ±10°, HorizontalFlip, VerticalFlip, RandomCrop 224 with padding 10, ColorJitter for amp/phase, GaussianBlur), `get_val_transforms()` (resize only)
+- [X] T021 [P] [US1] Implement `SubjectDataset` class in `neur/datasets.py`: `__init__()` accepts subject index dict and transform, `__len__()` returns subject count, `__getitem__()` loads amp/phase/mask images (zero-fill if missing), stacks into 4-channel tensor (amp, phase, mask, mask_indicator), applies transforms with shared seed for geometric ops, normalizes with ImageNet stats
+- [X] T022 [US1] Implement model builder in `neur/model.py`: `build_backbone()` function to load pre-trained ResNet18 or VGG11-BN from torchvision, `adapt_first_conv_for_4ch()` to modify conv1 for 4-channel input, `replace_classifier_head()` to set output dimension to 5 classes
+- [X] T023 [US1] Implement discriminative fine-tuning utilities in `neur/train.py`: `freeze_backbone()` to disable gradients for conv layers, `unfreeze_backbone()` to enable gradients, `get_discriminative_optimizer()` to create Adam with layer-wise LR (head: 1e-3, late backbone: 1e-4, early backbone: 1e-5)
+- [X] T024 [US1] Implement F0.5 metric in `neur/eval.py`: `compute_fbeta_score()` using `sklearn.metrics.fbeta_score(beta=0.5)` for class 0 (chlorella), compute per-class precision/recall/F1 scores
+- [X] T025 [US1] Implement early stopping in `neur/train.py`: `EarlyStopping` class tracking best F0.5(chlorella) score, patience counter (default 5 epochs), returns should_stop signal
+- [X] T026 [US1] Implement training loop per fold in `neur/train.py`: `train_one_fold()` function with two-stage fine-tuning (Stage 1: freeze backbone for 5 epochs at LR=1e-3, Stage 2: unfreeze with discriminative LR), CrossEntropyLoss, validation after each epoch, save best checkpoint when F0.5(chlorella) improves, return best metrics
+- [X] T027 [US1] Implement checkpoint saving/loading in `neur/train.py`: `save_checkpoint()` saves state_dict, epoch, metrics, config to .pth file, `load_checkpoint()` restores model state, handle device placement (CPU/GPU)
+- [X] T028 [US1] Implement confusion matrix generation in `neur/eval.py`: `compute_confusion_matrix()` using sklearn, save as JSON and PNG visualization, include row/column labels for 5 classes
+- [X] T029 [US1] Implement PR curve generation in `neur/eval.py`: `compute_pr_curves()` for all classes using `sklearn.metrics.precision_recall_curve()`, save data as JSON and plot as PNG with matplotlib, highlight chlorella curve
+- [X] T030 [US1] Implement metrics report writer in `neur/eval.py`: `generate_metrics_report()` aggregates per-class metrics, confusion matrix, PR curves into JSON file following MetricsReport format from data-model.md
+- [X] T031 [US1] Implement validation prediction caching in `neur/train.py`: save validation softmax probabilities to `outputs/val_predictions.json` with format {fold_id: {subject_id: {probabilities: [...], true_label: int}}}
+- [X] T032 [US1] Create training script in `scripts/train.py`: argparse CLI with --config, --data-root, --output-dir, --model-name, --num-folds, --epochs, --batch-size, --lr-head, --lr-backbone, --patience, --seed, --device, --num-workers, --resume, --verbose flags
+- [X] T033 [US1] Implement main training pipeline in `scripts/train.py`: load config, set seeds for reproducibility, discover subjects, create folds, iterate over folds calling `train_one_fold()`, aggregate metrics across folds, generate final reports, save validation predictions for calibration
+- [X] T034 [US1] Add progress logging in `scripts/train.py`: log fold iteration, epoch progress, train/val loss/accuracy, chlorella metrics, checkpoint saves, early stopping triggers, final aggregated metrics
+- [X] T035 [US1] Add error handling in `scripts/train.py`: catch config errors (exit code 1), data errors (exit code 2), model errors (exit code 3), training errors (exit code 4), provide actionable error messages to stderr
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - training completes, checkpoints saved, metrics reported, validation predictions cached
 
@@ -101,12 +101,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T039 [US2] Implement threshold calibration in `neur/eval.py`: `calibrate_threshold()` function accepts validation predictions dict {subject_id: {probabilities: [...], true_label: int}}, sweeps thresholds from 0.0 to 1.0 with step 0.01 (100 values), for each threshold applies decision rule (if prob[0] >= τ → predict 0, else argmax(prob[1:4])+1), computes precision_0(τ) and recall_0(τ) using sklearn, selects τ₀ maximizing precision subject to recall ≥ target_recall (default 0.5), returns optimal threshold and achieved metrics
-- [ ] T040 [US2] Implement calibration report writer in `neur/eval.py`: `save_calibration()` writes CalibrationParameters to JSON file with format from data-model.md, include timestamp and calibration source metadata
-- [ ] T041 [US2] Create calibration script in `scripts/calibrate.py`: argparse CLI with --val-preds (required), --output, --target-recall, --n-thresholds, --plot, --verbose flags
-- [ ] T042 [US2] Implement main calibration pipeline in `scripts/calibrate.py`: load validation predictions from JSON, call `calibrate_threshold()`, save calibration.json, optionally generate precision-recall trade-off plot with matplotlib showing threshold sweep curve
-- [ ] T043 [US2] Add progress logging in `scripts/calibrate.py`: log threshold sweep progress, optimal threshold found, achieved precision/recall, warning if constraint not met
-- [ ] T044 [US2] Add error handling in `scripts/calibrate.py`: catch input errors (val_predictions.json not found or invalid format, exit code 1), calibration errors (no valid thresholds, exit code 2), provide actionable error messages
+- [X] T039 [US2] Implement threshold calibration in `neur/eval.py`: `calibrate_threshold()` function accepts validation predictions dict {subject_id: {probabilities: [...], true_label: int}}, sweeps thresholds from 0.0 to 1.0 with step 0.01 (100 values), for each threshold applies decision rule (if prob[0] >= τ → predict 0, else argmax(prob[1:4])+1), computes precision_0(τ) and recall_0(τ) using sklearn, selects τ₀ maximizing precision subject to recall ≥ target_recall (default 0.5), returns optimal threshold and achieved metrics
+- [X] T040 [US2] Implement calibration report writer in `neur/eval.py`: `save_calibration()` writes CalibrationParameters to JSON file with format from data-model.md, include timestamp and calibration source metadata
+- [X] T041 [US2] Create calibration script in `scripts/calibrate.py`: argparse CLI with --val-preds (required), --output, --target-recall, --n-thresholds, --plot, --verbose flags
+- [X] T042 [US2] Implement main calibration pipeline in `scripts/calibrate.py`: load validation predictions from JSON, call `calibrate_threshold()`, save calibration.json, optionally generate precision-recall trade-off plot with matplotlib showing threshold sweep curve
+- [X] T043 [US2] Add progress logging in `scripts/calibrate.py`: log threshold sweep progress, optimal threshold found, achieved precision/recall, warning if constraint not met
+- [X] T044 [US2] Add error handling in `scripts/calibrate.py`: catch input errors (val_predictions.json not found or invalid format, exit code 1), calibration errors (no valid thresholds, exit code 2), provide actionable error messages
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - training produces validation predictions, calibration optimizes threshold
 
@@ -129,15 +129,15 @@
 
 ### Implementation for User Story 3
 
-- [ ] T049 [P] [US3] Implement test data discovery in `neur/infer.py`: `discover_test_subjects()` traverses test directory, groups images by subject_id without class labels, returns test Subject index dict
-- [ ] T050 [P] [US3] Implement calibrated decision rule in `neur/infer.py`: `apply_calibrated_threshold()` accepts probabilities (5-dim) and threshold_chlorella, returns predicted class using two-stage rule (if prob[0] >= τ → 0, else → argmax(prob[1:4])+1)
-- [ ] T051 [US3] Implement inference loop in `neur/infer.py`: `predict_test_set()` function loads model checkpoint and calibration.json, creates test DataLoader, runs forward pass on all test subjects, applies calibrated decision rule, returns list of (subject_id, predicted_class) tuples
-- [ ] T052 [US3] Implement submission writer in `neur/infer.py`: `write_submission_csv()` accepts predictions list, formats as CSV with header "ID,TARGET", sorts by subject_id, writes to file
-- [ ] T053 [US3] Implement submission validator in `neur/infer.py`: `validate_submission()` checks format (header, columns, row count), no duplicate IDs, all targets in [0, 4], compare structure to example_solution.csv
-- [ ] T054 [US3] Create prediction script in `scripts/predict.py`: argparse CLI with --test-dir (required), --checkpoint (required), --calibration (required), --output, --batch-size, --device, --num-workers, --tta, --verbose flags
-- [ ] T055 [US3] Implement main inference pipeline in `scripts/predict.py`: load model checkpoint and calibration, discover test subjects, create test DataLoader, run inference with `predict_test_set()`, write submission.csv, validate format
-- [ ] T056 [US3] Add progress logging in `scripts/predict.py`: log model loading, test subject discovery (total count, missing modality statistics), inference batch progress, calibrated threshold applied, chlorella prediction count, submission validation results
-- [ ] T057 [US3] Add error handling in `scripts/predict.py`: catch input errors (test-dir/checkpoint/calibration not found, exit code 1), model errors (checkpoint load failure, architecture mismatch, exit code 2), data errors (no subjects found, parsing failures, exit code 3), validation errors (submission format invalid, exit code 4)
+- [X] T049 [P] [US3] Implement test data discovery in `neur/infer.py`: `discover_test_subjects()` traverses test directory, groups images by subject_id without class labels, returns test Subject index dict
+- [X] T050 [P] [US3] Implement calibrated decision rule in `neur/infer.py`: `apply_calibrated_threshold()` accepts probabilities (5-dim) and threshold_chlorella, returns predicted class using two-stage rule (if prob[0] >= τ → 0, else → argmax(prob[1:4])+1)
+- [X] T051 [US3] Implement inference loop in `neur/infer.py`: `predict_test_set()` function loads model checkpoint and calibration.json, creates test DataLoader, runs forward pass on all test subjects, applies calibrated decision rule, returns list of (subject_id, predicted_class) tuples
+- [X] T052 [US3] Implement submission writer in `neur/infer.py`: `write_submission_csv()` accepts predictions list, formats as CSV with header "ID,TARGET", sorts by subject_id, writes to file
+- [X] T053 [US3] Implement submission validator in `neur/infer.py`: `validate_submission()` checks format (header, columns, row count), no duplicate IDs, all targets in [0, 4], compare structure to example_solution.csv
+- [X] T054 [US3] Create prediction script in `scripts/predict.py`: argparse CLI with --test-dir (required), --checkpoint (required), --calibration (required), --output, --batch-size, --device, --num-workers, --tta, --verbose flags
+- [X] T055 [US3] Implement main inference pipeline in `scripts/predict.py`: load model checkpoint and calibration, discover test subjects, create test DataLoader, run inference with `predict_test_set()`, write submission.csv, validate format
+- [X] T056 [US3] Add progress logging in `scripts/predict.py`: log model loading, test subject discovery (total count, missing modality statistics), inference batch progress, calibrated threshold applied, chlorella prediction count, submission validation results
+- [X] T057 [US3] Add error handling in `scripts/predict.py`: catch input errors (test-dir/checkpoint/calibration not found, exit code 1), model errors (checkpoint load failure, architecture mismatch, exit code 2), data errors (no subjects found, parsing failures, exit code 3), validation errors (submission format invalid, exit code 4)
 
 **Checkpoint**: All user stories should now be independently functional - train → calibrate → predict → submit pipeline complete
 
