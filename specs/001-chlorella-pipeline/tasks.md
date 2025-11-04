@@ -18,13 +18,13 @@
 
 **Purpose**: Project initialization and Python environment structure
 
-- [ ] T001 Create project directory structure: `neur/`, `configs/`, `outputs/{checkpoints,reports,submissions}/`, `tests/`, `scripts/`
-- [ ] T002 Initialize Python package structure with `neur/__init__.py` and submodule placeholders
-- [ ] T003 [P] Create `requirements.txt` with pinned dependencies: PyTorch 2.0+, torchvision 0.15+, albumentations 1.3+, scikit-learn 1.3+, Pillow 10.0+, PyYAML 6.0+, pytest 7.4+
-- [ ] T004 [P] Configure code quality tools: `.flake8` (line length 100), `pyproject.toml` (Black line length 100)
-- [ ] T005 [P] Create default YAML configuration template in `configs/default.yaml` with data paths, model settings, training hyperparameters, augmentation settings, reproducibility seeds
-- [ ] T006 [P] Add `.gitignore` for `data/`, `outputs/`, `*.pyc`, `__pycache__/`, `.pytest_cache/`
-- [ ] T007 Create `README.md` with project overview, setup instructions, quick start commands
+- [X] T001 Create project directory structure: `neur/`, `configs/`, `outputs/{checkpoints,reports,submissions}/`, `tests/`, `scripts/`
+- [X] T002 Initialize Python package structure with `neur/__init__.py` and submodule placeholders
+- [X] T003 [P] Create `requirements.txt` with pinned dependencies: PyTorch 2.0+, torchvision 0.15+, albumentations 1.3+, scikit-learn 1.3+, Pillow 10.0+, PyYAML 6.0+, pytest 7.4+
+- [X] T004 [P] Configure code quality tools: `.flake8` (line length 100), `pyproject.toml` (Black line length 100)
+- [X] T005 [P] Create default YAML configuration template in `configs/default.yaml` with data paths, model settings, training hyperparameters, augmentation settings, reproducibility seeds
+- [X] T006 [P] Add `.gitignore` for `data/`, `outputs/`, `*.pyc`, `__pycache__/`, `.pytest_cache/`
+- [X] T007 Create `README.md` with project overview, setup instructions, quick start commands
 
 ---
 
@@ -34,12 +34,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T008 [P] Implement utility functions in `neur/utils.py`: `set_seed()` (Python/NumPy/PyTorch/CUDA), `load_config()` (YAML parser), `ensure_dir()` (create directories), `parse_subject_id()` (extract ID from filename with modality suffix removal)
-- [ ] T009 [P] Define class label constants in `neur/utils.py`: `CLASS_LABELS` list (id, name, folder_name, is_priority), `CLASS_ID_TO_NAME` dict, `FOLDER_TO_CLASS_ID` dict
-- [ ] T010 [P] Implement file discovery in `neur/utils.py`: `discover_subjects()` function to traverse train/ and test/ directories, group images by subject_id and modality (amp, phase, mask), return Subject index dict
-- [ ] T011 Implement stratified GroupKFold splitter in `neur/utils.py`: `create_subject_folds()` using `sklearn.model_selection.StratifiedGroupKFold(n_splits=5)` with subject IDs as groups and class labels for stratification
-- [ ] T012 [P] Implement ImageNet normalization constants in `neur/datasets.py`: define IMAGENET_MEAN, IMAGENET_STD for 3-channel normalization
-- [ ] T013 Create pytest fixtures in `tests/fixtures.py`: synthetic subject data generator (fake PNG files with various modality combinations), temporary directory setup/teardown
+- [X] T008 [P] Implement utility functions in `neur/utils.py`: `set_seed()` (Python/NumPy/PyTorch/CUDA), `load_config()` (YAML parser), `ensure_dir()` (create directories), `parse_subject_id()` (extract ID from filename with modality suffix removal)
+- [X] T009 [P] Define class label constants in `neur/utils.py`: `CLASS_LABELS` list (id, name, folder_name, is_priority), `CLASS_ID_TO_NAME` dict, `FOLDER_TO_CLASS_ID` dict
+- [X] T010 [P] Implement file discovery in `neur/utils.py`: `discover_subjects()` function to traverse train/ and test/ directories, group images by subject_id and modality (amp, phase, mask), return Subject index dict
+- [X] T011 Implement stratified GroupKFold splitter in `neur/utils.py`: `create_subject_folds()` using `sklearn.model_selection.StratifiedGroupKFold(n_splits=5)` with subject IDs as groups and class labels for stratification
+- [X] T012 [P] Implement ImageNet normalization constants in `neur/datasets.py`: define IMAGENET_MEAN, IMAGENET_STD for 3-channel normalization
+- [X] T013 Create pytest fixtures in `tests/fixtures.py`: synthetic subject data generator (fake PNG files with various modality combinations), temporary directory setup/teardown
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -55,12 +55,12 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T014 [P] [US1] Unit test for subject ID parsing in `tests/test_utils.py`: test `parse_subject_id()` with various filename patterns (34_amp.png → "34", test_123_phase.png → "test_123"), edge cases (no suffix, invalid format)
-- [ ] T015 [P] [US1] Unit test for subject grouping in `tests/test_utils.py`: test `discover_subjects()` with mock directory structure, verify correct modality association, handle missing modalities
-- [ ] T016 [P] [US1] Unit test for GroupKFold splitting in `tests/test_utils.py`: test `create_subject_folds()` verifies no subject appears in both train/val within same fold, stratification maintains class balance (±10%), deterministic with fixed seed
-- [ ] T017 [P] [US1] Unit test for 4-channel tensor construction in `tests/test_datasets.py`: test `SubjectDataset.__getitem__()` produces (4, 224, 224) tensor, mask indicator channel set correctly for present/missing modalities
-- [ ] T018 [P] [US1] Unit test for first conv adaptation in `tests/test_model.py`: test `adapt_first_conv_for_4ch()` converts conv1 from (64, 3, 7, 7) to (64, 4, 7, 7), preserves pre-trained weights for channels 0-2
-- [ ] T019 [P] [US1] Integration test for training pipeline in `tests/test_train.py`: test training completes on synthetic data (10 subjects, 2 folds), checkpoints saved, metrics report generated, no crashes
+- [X] T014 [P] [US1] Unit test for subject ID parsing in `tests/test_utils.py`: test `parse_subject_id()` with various filename patterns (34_amp.png → "34", test_123_phase.png → "test_123"), edge cases (no suffix, invalid format)
+- [X] T015 [P] [US1] Unit test for subject grouping in `tests/test_utils.py`: test `discover_subjects()` with mock directory structure, verify correct modality association, handle missing modalities
+- [X] T016 [P] [US1] Unit test for GroupKFold splitting in `tests/test_utils.py`: test `create_subject_folds()` verifies no subject appears in both train/val within same fold, stratification maintains class balance (±10%), deterministic with fixed seed
+- [X] T017 [P] [US1] Unit test for 4-channel tensor construction in `tests/test_datasets.py`: test `SubjectDataset.__getitem__()` produces (4, 224, 224) tensor, mask indicator channel set correctly for present/missing modalities
+- [X] T018 [P] [US1] Unit test for first conv adaptation in `tests/test_model.py`: test `adapt_first_conv_for_4ch()` converts conv1 from (64, 3, 7, 7) to (64, 4, 7, 7), preserves pre-trained weights for channels 0-2
+- [X] T019 [P] [US1] Integration test for training pipeline in `tests/test_train.py`: test training completes on synthetic data (10 subjects, 2 folds), checkpoints saved, metrics report generated, no crashes
 
 ### Implementation for User Story 1
 
