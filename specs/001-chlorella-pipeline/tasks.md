@@ -122,10 +122,10 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T045 [P] [US3] Unit test for decision rule in `tests/test_infer.py`: test `apply_calibrated_threshold()` with various probabilities and threshold values, verify chlorella decision (prob[0] >= τ → predict 0) and fallback decision (else → argmax(prob[1:4])+1)
-- [ ] T046 [P] [US3] Unit test for submission CSV format in `tests/test_infer.py`: test `write_submission_csv()` produces exact format (header "ID,TARGET", one row per subject, ID column as subject_id, TARGET column as integers 0-4), compare against example_solution.csv structure
-- [ ] T047 [P] [US3] Unit test for submission validation in `tests/test_infer.py`: test `validate_submission()` checks for duplicates, missing IDs, out-of-range targets, correct column names
-- [ ] T048 [P] [US3] Integration test for inference pipeline in `tests/test_infer.py`: test inference completes on synthetic test data, submission.csv generated, format valid, all test subjects present
+- [X] T045 [P] [US3] Unit test for decision rule in `tests/test_infer.py`: test `apply_calibrated_threshold()` with various probabilities and threshold values, verify chlorella decision (prob[0] >= τ → predict 0) and fallback decision (else → argmax(prob[1:4])+1)
+- [X] T046 [P] [US3] Unit test for submission CSV format in `tests/test_infer.py`: test `write_submission_csv()` produces exact format (header "ID,TARGET", one row per subject, ID column as subject_id, TARGET column as integers 0-4), compare against example_solution.csv structure
+- [X] T047 [P] [US3] Unit test for submission validation in `tests/test_infer.py`: test `validate_submission()` checks for duplicates, missing IDs, out-of-range targets, correct column names
+- [X] T048 [P] [US3] Integration test for inference pipeline in `tests/test_infer.py`: test inference completes on synthetic test data, submission.csv generated, format valid, all test subjects present
 
 ### Implementation for User Story 3
 
@@ -177,17 +177,17 @@
 - [ ] T067 [P] Documentation: Update `README.md` with complete setup instructions, quick start example, CLI reference for train/calibrate/predict scripts
 - [ ] T068 [P] Documentation: Create `docs/ARCHITECTURE.md` documenting project structure, module responsibilities (neur/datasets, neur/model, neur/train, neur/eval, neur/infer, neur/utils), data flow diagram
 - [ ] T069 [P] Documentation: Create `docs/TROUBLESHOOTING.md` with common issues (CUDA OOM, data not found, format errors) and solutions
-- [ ] T070 [P] Code quality: Run Black formatter on all Python files with line length 100
-- [ ] T071 [P] Code quality: Run flake8 linter, fix violations (unused imports, long lines, complexity)
-- [ ] T072 [P] Code quality: Add type hints to all public functions in neur/ modules
-- [ ] T073 [P] Code quality: Add docstrings (Google style) to all public functions and classes
+- [X] T070 [P] Code quality: Run Black formatter on all Python files with line length 100
+- [X] T071 [P] Code quality: Run flake8 linter, fix violations (unused imports, long lines, complexity)
+- [X] T072 [P] Code quality: Add type hints to all public functions in neur/ modules
+- [X] T073 [P] Code quality: Add docstrings (Google style) to all public functions and classes
 - [ ] T074 [P] Testing: Add unit tests for edge cases in `tests/test_utils.py`: empty directories, corrupted images, invalid filenames
 - [ ] T075 [P] Testing: Add unit tests for edge cases in `tests/test_datasets.py`: all modalities missing, single modality present, different image sizes
 - [ ] T076 Reproducibility validation: Run training twice with same seed, verify metrics match to 4 decimal places (constitution requirement)
 - [ ] T077 Performance optimization: Profile training loop, optimize data loading bottlenecks (increase num_workers if I/O bound)
 - [ ] T078 Security hardening: Add path sanitization in file discovery using `pathlib.Path.resolve()`, validate no directory traversal attacks
-- [ ] T079 Run quickstart.md validation: Follow quickstart.md instructions end-to-end on fresh environment, verify all steps work
-- [ ] T080 Final integration test: Run full pipeline (setup → train → calibrate → predict) on provided data, verify submission.csv matches format, chlorella recall ≥ 0.5
+- [X] T079 Run quickstart.md validation: Follow quickstart.md instructions end-to-end on fresh environment, verify all steps work
+- [X] T080 Final integration test: Run full pipeline (setup → train → calibrate → predict) on provided data, verify submission.csv matches format, chlorella recall ≥ 0.5
 
 ---
 
