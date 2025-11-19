@@ -13,7 +13,7 @@ Successfully implemented a complete machine learning pipeline for chlorella clas
 ### Key Achievements
 
 - ✅ **Training Pipeline**: 5-fold cross-validation with subject-level stratification
-- ✅ **Model Architecture**: ResNet18 with 4-channel input adaptation (amp, phase, mask, mask_indicator)
+- ✅ **Model Architecture**: ResNet18, **ResNeXt-50**, VGG11-BN with 4-channel input (amp, phase, mask, mask_indicator)
 - ✅ **Calibration**: Threshold optimization achieving 72.84% precision at 79.72% recall
 - ✅ **Testing**: 53 unit tests passing, TDD approach throughout
 - ✅ **Code Quality**: Black formatting, flake8 linting, comprehensive docstrings
@@ -48,7 +48,7 @@ Successfully implemented a complete machine learning pipeline for chlorella clas
 **Implementation (16/16):**
 - Data augmentation with albumentations ✓
 - SubjectDataset class with 4-channel support ✓
-- Model builder (ResNet18/VGG11-BN) ✓
+- Model builder (ResNet18/ResNeXt-50/VGG11-BN) ✓
 - Discriminative fine-tuning utilities ✓
 - F0.5 metric computation ✓
 - Early stopping mechanism ✓

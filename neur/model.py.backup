@@ -1,5 +1,5 @@
 """
-Model architecture and utilities for the Chlorella classification pipeline.
+"""Model architecture and utilities for the Chlorella classification pipeline.
 
 Handles:
 - Pre-trained backbone loading (ResNet18, VGG11-BN, ResNeXt-50)
@@ -22,7 +22,7 @@ def build_backbone(
     Load pre-trained backbone model.
 
     Args:
-        architecture: Model architecture name ("resnet18" or "vgg11_bn")
+        architecture: Model architecture name ("resnet18", "vgg11_bn", or "resnext50_32x4d")
         pretrained: Whether to load ImageNet pre-trained weights
 
     Returns:
@@ -41,8 +41,9 @@ def build_backbone(
         return model, feature_dim
 
     elif architecture == "resnext50_32x4d":
-        # ResNeXt-50 (32x4d) with grouped convolutions for better feature learning
-        # Research shows 98.45% accuracy on algae classification
+        # ResNeXt-50 (32x4d) with grouped convolutions
+        # Excellent for microscopy images (98.45% accuracy on algae classification)
+        # Reference: Pant et al. for Pediastrum genus classification
         model = models.resnext50_32x4d(pretrained=pretrained)
         feature_dim = model.fc.in_features  # 2048 for ResNeXt-50
         # Remove final FC layer (will replace with custom head)
@@ -82,7 +83,7 @@ def adapt_first_conv_for_4ch(model: nn.Module, architecture: str = "resnet18") -
         ValueError: If architecture is not supported
     """
     if architecture in ["resnet18", "resnext50_32x4d"]:
-        # For ResNet/ResNeXt wrapped in Sequential, first conv is at model[0]
+        # For ResNet wrapped in Sequential, first conv is at model[0] (the conv1 layer)
         old_conv = model[0]  # First child is conv1
 
         # Create new conv with 4 input channels
