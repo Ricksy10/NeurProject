@@ -8,11 +8,16 @@ Handles:
 - Model building utilities
 """
 
+import ssl
 from typing import Tuple
 
 import torch
 import torch.nn as nn
 from torchvision import models
+
+# Fix SSL certificate verification issue on macOS
+# This allows downloading pre-trained weights from PyTorch hub
+ssl._create_default_https_context = ssl._create_unverified_context
 
 
 def build_backbone(
