@@ -59,19 +59,17 @@ def get_train_transforms(
         albumentations Compose object with transform pipeline
     """
     return A.Compose([
-        # Geometric augmentations (applied to all modalities with same params)
+        # First resize to ensure images are at least img_size
+        A.Resize(height=img_size, width=img_size),
+        
+        # Then apply geometric augmentations
         A.Rotate(limit=rotation_degrees, p=0.5, border_mode=0),
         A.HorizontalFlip(p=horizontal_flip_prob),
         A.VerticalFlip(p=vertical_flip_prob),
-        A.RandomCrop(height=img_size, width=img_size, p=1.0) if crop_padding > 0 else A.NoOp(),
-        A.PadIfNeeded(min_height=img_size, min_width=img_size, border_mode=0, p=1.0),
         
-        # Photometric augmentations (will be selectively applied to amp/phase only)
+        # Photometric augmentations (applied to all channels)
         A.ColorJitter(brightness=brightness, contrast=contrast, p=0.3),
         A.GaussianBlur(blur_limit=(3, 7), sigma_limit=(blur_sigma_min, blur_sigma_max), p=blur_prob),
-        
-        # Resize to target size
-        A.Resize(height=img_size, width=img_size),
     ], additional_targets={'phase': 'image', 'mask': 'mask'})
 
 

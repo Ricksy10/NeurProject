@@ -2,7 +2,7 @@
 # Override via CLI arguments or create custom config
 
 data:
-  data_root: "data/"
+  data_root: "."  # Project root, script will append train/ or test/
   output_dir: "outputs/"
   img_size: 224
   num_workers: 4
@@ -11,7 +11,7 @@ model:
   architecture: "resnet18"  # Options: "resnet18", "vgg11_bn"
   num_classes: 5
   input_channels: 4  # amp, phase, mask, mask_indicator
-  pretrained: true
+  pretrained: false  # Set to false to avoid SSL certificate issues
 
 training:
   num_folds: 5

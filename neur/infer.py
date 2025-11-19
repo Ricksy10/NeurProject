@@ -10,7 +10,7 @@ Handles:
 import csv
 import json
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import torch
 import torch.nn as nn

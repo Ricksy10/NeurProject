@@ -74,8 +74,8 @@ def adapt_first_conv_for_4ch(model: nn.Module, architecture: str = "resnet18") -
         ValueError: If architecture is not supported
     """
     if architecture == "resnet18":
-        # For ResNet, first conv is at model[0][0]
-        old_conv = model[0][0]  # First Sequential, first Conv2d
+        # For ResNet wrapped in Sequential, first conv is at model[0] (the conv1 layer)
+        old_conv = model[0]  # First child is conv1
         
         # Create new conv with 4 input channels
         new_conv = nn.Conv2d(
@@ -97,7 +97,7 @@ def adapt_first_conv_for_4ch(model: nn.Module, architecture: str = "resnet18") -
                 new_conv.bias.copy_(old_conv.bias)
         
         # Replace first conv
-        model[0][0] = new_conv
+        model[0] = new_conv
         
     elif architecture == "vgg11_bn":
         # For VGG, first conv is at model[0] (first layer in features)
