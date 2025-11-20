@@ -37,5 +37,5 @@ augmentation:
 
 reproducibility:
   seed: 42
-  deterministic: true
-  benchmark: false
+  deterministic: false
+  benchmark: true

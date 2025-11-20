@@ -9,11 +9,17 @@ Handles:
 """
 
 import ssl
+import warnings
 from typing import Tuple
 
 import torch
 import torch.nn as nn
 from torchvision import models
+
+# Suppress deprecation warnings
+warnings.filterwarnings('ignore', category=UserWarning, module='torchvision')
+warnings.filterwarnings('ignore', message='.*pretrained.*')
+warnings.filterwarnings('ignore', message='.*weights.*')
 
 # Fix SSL certificate verification issue on macOS
 # This allows downloading pre-trained weights from PyTorch hub
@@ -27,7 +33,7 @@ def build_backbone(
     Load pre-trained backbone model.
 
     Args:
-        architecture: Model architecture name ("resnet18" or "vgg11_bn")
+        architecture: Model architecture name
         pretrained: Whether to load ImageNet pre-trained weights
 
     Returns:
@@ -60,11 +66,37 @@ def build_backbone(
         feature_extractor = model.features
         feature_dim = 512  # VGG11 outputs 512 features
         return feature_extractor, feature_dim
+    
+    elif architecture == "efficientnet_b0":
+        # EfficientNet-B0: Excellent accuracy with low parameters
+        # Great for medical/microscopy images
+        model = models.efficientnet_b0(pretrained=pretrained)
+        feature_dim = model.classifier[1].in_features  # 1280 for B0
+        # Use only the features part (before avgpool and classifier)
+        model = model.features
+        return model, feature_dim
+    
+    elif architecture == "efficientnet_b1":
+        # EfficientNet-B1: Better accuracy, still efficient
+        model = models.efficientnet_b1(pretrained=pretrained)
+        feature_dim = model.classifier[1].in_features  # 1280 for B1
+        # Use only the features part
+        model = model.features
+        return model, feature_dim
+    
+    elif architecture == "efficientnet_b3":
+        # EfficientNet-B3: High accuracy for challenging tasks
+        model = models.efficientnet_b3(pretrained=pretrained)
+        feature_dim = model.classifier[1].in_features  # 1536 for B3
+        # Use only the features part
+        model = model.features
+        return model, feature_dim
 
     else:
         raise ValueError(
             f"Unsupported architecture: {architecture}. "
-            f"Supported: 'resnet18', 'resnext50_32x4d', 'vgg11_bn'"
+            f"Supported: 'resnet18', 'resnext50_32x4d', 'vgg11_bn', "
+            f"'efficientnet_b0', 'efficientnet_b1', 'efficientnet_b3'"
         )
 
 
@@ -137,6 +169,28 @@ def adapt_first_conv_for_4ch(model: nn.Module, architecture: str = "resnet18") -
 
         # Replace first conv
         model[0] = new_conv
+    
+    elif architecture in ["efficientnet_b0", "efficientnet_b1", "efficientnet_b3"]:
+        # EfficientNet: modify first conv in model[0][0] (since model = model.features)
+        old_conv = model[0][0]
+        
+        new_conv = nn.Conv2d(
+            in_channels=4,
+            out_channels=old_conv.out_channels,
+            kernel_size=old_conv.kernel_size,
+            stride=old_conv.stride,
+            padding=old_conv.padding,
+            bias=old_conv.bias is not None,
+        )
+        
+        with torch.no_grad():
+            new_conv.weight[:, :3, :, :] = old_conv.weight
+            new_conv.weight[:, 3:, :, :] = torch.randn_like(new_conv.weight[:, 3:, :, :]) * 0.01
+            
+            if old_conv.bias is not None:
+                new_conv.bias.copy_(old_conv.bias)
+        
+        model[0][0] = new_conv
 
     else:
         raise ValueError(f"Unsupported architecture: {architecture}")
@@ -178,6 +232,16 @@ def replace_classifier_head(
             nn.ReLU(True),
             nn.Dropout(0.5),
             nn.Linear(4096, num_classes),
+        )
+        model = nn.Sequential(model, classifier)
+    
+    elif architecture in ["efficientnet_b0", "efficientnet_b1", "efficientnet_b3"]:
+        # EfficientNet: Add dropout + FC classifier
+        classifier = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Flatten(),
+            nn.Dropout(0.3),
+            nn.Linear(feature_dim, num_classes)
         )
         model = nn.Sequential(model, classifier)
 
@@ -280,7 +344,8 @@ class ChlorellaClassifier(nn.Module):
         Returns:
             Generator of parameters
         """
-        if self.architecture in ["resnet18", "resnext50_32x4d", "vgg11_bn"]:
+        if self.architecture in ["resnet18", "resnext50_32x4d", "vgg11_bn", 
+                                  "efficientnet_b0", "efficientnet_b1", "efficientnet_b3"]:
             # Backbone is first part of the sequential model
             return self.model[0].parameters()
         else:
@@ -293,7 +358,8 @@ class ChlorellaClassifier(nn.Module):
         Returns:
             Generator of parameters
         """
-        if self.architecture in ["resnet18", "resnext50_32x4d", "vgg11_bn"]:
+        if self.architecture in ["resnet18", "resnext50_32x4d", "vgg11_bn",
+                                  "efficientnet_b0", "efficientnet_b1", "efficientnet_b3"]:
             # Classifier is second part of the sequential model
             return self.model[1].parameters()
         else:

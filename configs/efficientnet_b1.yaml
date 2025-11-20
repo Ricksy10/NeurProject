@@ -1,0 +1,41 @@
+# Optimized Configuration for EfficientNet-B1
+# Better balance between accuracy and speed
+
+data:
+  data_root: "."
+  output_dir: "outputs/"
+  img_size: 240  # EfficientNet-B1 native: 240x240
+  num_workers: 4
+
+model:
+  architecture: "efficientnet_b1"  # Best balance
+  num_classes: 5
+  input_channels: 4
+  pretrained: true
+
+training:
+  num_folds: 5
+  epochs: 35  # EfficientNet needs more epochs
+  batch_size: 16  # Adjust based on GPU memory
+  lr_head: 0.001
+  lr_backbone: 0.0001
+  lr_early_backbone: 0.00001
+  weight_decay: 0.0001
+  patience: 7  # More patience for better convergence
+  unfreeze_epoch: 5
+
+augmentation:
+  rotation_degrees: 15  # Increased augmentation
+  horizontal_flip_prob: 0.5
+  vertical_flip_prob: 0.5
+  crop_padding: 15
+  brightness: 0.25
+  contrast: 0.25
+  blur_prob: 0.4
+  blur_sigma_min: 0.1
+  blur_sigma_max: 2.5
+
+reproducibility:
+  seed: 42
+  deterministic: false
+  benchmark: true

@@ -12,6 +12,7 @@ Contains helpers for:
 
 import random
 import re
+import warnings
 from pathlib import Path
 from typing import Dict, List, Tuple, Any
 
@@ -19,6 +20,10 @@ import numpy as np
 import yaml
 import torch
 from sklearn.model_selection import StratifiedGroupKFold
+
+# Suppress CUDA deterministic warnings
+warnings.filterwarnings('ignore', message='.*Deterministic behavior.*')
+warnings.filterwarnings('ignore', message='.*CuBLAS.*')
 
 
 # Class label definitions (as per data-model.md)

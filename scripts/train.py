@@ -45,7 +45,7 @@ def parse_args():
         "--model-name",
         type=str,
         default=None,
-        choices=["resnet18", "resnext50_32x4d", "vgg11_bn"],
+        choices=["resnet18", "resnext50_32x4d", "vgg11_bn", "efficientnet_b0", "efficientnet_b1", "efficientnet_b3"],
         help="Model architecture (overrides config)",
     )
     parser.add_argument(
